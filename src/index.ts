@@ -1,14 +1,16 @@
 import { Engine, Loader, DisplayMode } from 'excalibur';
 import { LevelOne } from './scenes/level-one/level-one';
-import { Player } from './actors/player/player';
+import { ClickFrog } from './actors/player/ClickFrog';
 import { Resources } from './resources';
+import { FrogCounter } from './actors/player/FrogCounter';
 
 /**
  * Managed game class
  */
 class Game extends Engine {
-  private player: Player;
+  private frog: ClickFrog;
   private levelOne: LevelOne;
+  private frogCounter: FrogCounter;
 
   constructor() {
     super({ displayMode: DisplayMode.FullScreen });
@@ -16,10 +18,14 @@ class Game extends Engine {
 
   public start() {
 
-    // Create new scene with a player
     this.levelOne = new LevelOne(this);
-    this.player = new Player();
-    this.levelOne.add(this.player);
+
+    // actors
+    this.frogCounter = new FrogCounter(game);
+    this.frog = new ClickFrog(game, this.frogCounter);
+
+    this.levelOne.add(this.frog);
+    this.levelOne.add(this.frogCounter);
 
     game.add('levelOne', this.levelOne);
 
