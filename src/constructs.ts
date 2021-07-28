@@ -43,6 +43,16 @@ const constructs: Construct[] = [
     revealed: false,
   },
   {
+    id: "lilypad",
+    price: 3333,
+    priceScale: 1.1,
+    current: 0,
+    frogPerSec: 6,
+    name: "Lily Pad",
+    description: "A literal green floating stepping-stone for all frogs",
+    revealed: false,
+  },
+  {
     id: "pond",
     price: 10000,
     priceScale: 1.3,
@@ -70,6 +80,16 @@ const constructs: Construct[] = [
     frogPerSec: 100,
     name: "Ocean",
     description: "Replace an ocean's fish with saltwater frogs",
+    revealed: false,
+  },
+  {
+    id: "poisonfrog",
+    price: 10000000,
+    priceScale: 1.3,
+    current: 0,
+    frogPerSec: 5000,
+    name: "Poisonous Frog",
+    description: "Each color has a distinct flavor",
     revealed: false,
   },
 ];
