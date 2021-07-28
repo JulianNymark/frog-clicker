@@ -3,6 +3,7 @@ import { LevelOne } from './scenes/level-one/level-one';
 import { ClickFrog } from './actors/player/ClickFrog';
 import { Resources } from './resources';
 import { FrogCounter } from './actors/player/FrogCounter';
+import './main.css';
 
 /**
  * Managed game class
@@ -13,7 +14,10 @@ class Game extends Engine {
   private frogCounter: FrogCounter;
 
   constructor() {
-    super({ displayMode: DisplayMode.FullScreen });
+    super({ 
+      displayMode: DisplayMode.FullScreen,
+      canvasElementId: "excalibur-canvas",
+    });
   }
 
   public start() {

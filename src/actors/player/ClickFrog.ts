@@ -6,6 +6,7 @@ const FROG_SIZE = 300;
 
 export class ClickFrog extends Actor {
   private frogCounter: FrogCounter;
+  private startedClick = false;
 
   constructor(game: Engine, frogCounter: FrogCounter) {
     super({
@@ -19,10 +20,13 @@ export class ClickFrog extends Actor {
   }
 
   clickStart = () => {
+    this.startedClick = true;
     this.currentDrawing.scale.setTo((FROG_SIZE/this.currentDrawing.width)*0.95, FROG_SIZE/this.currentDrawing.height *0.95);
   };
 
   clickComplete = () => {
+    if (!this.startedClick) return;
+    this.startedClick = false;
     this.currentDrawing.scale.setTo(FROG_SIZE/this.currentDrawing.width, FROG_SIZE/this.currentDrawing.height);
 
     const initialCount = this.frogCounter.getFrogCount();
