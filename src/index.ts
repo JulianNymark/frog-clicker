@@ -2,7 +2,7 @@ import { Engine, Loader, DisplayMode } from 'excalibur';
 import { LevelOne } from './scenes/level-one/level-one';
 import { ClickFrog } from './actors/player/ClickFrog';
 import { Resources } from './resources';
-import { FrogCounter } from './actors/player/FrogCounter';
+import { PointerScope } from 'excalibur/dist/Input/Pointer';
 import './main.css';
 
 /**
@@ -11,12 +11,12 @@ import './main.css';
 class Game extends Engine {
   private frog: ClickFrog;
   private levelOne: LevelOne;
-  private frogCounter: FrogCounter;
 
   constructor() {
     super({ 
       displayMode: DisplayMode.FullScreen,
       canvasElementId: "excalibur-canvas",
+      // pointerScope: PointerScope.Canvas,
     });
   }
 
@@ -25,11 +25,9 @@ class Game extends Engine {
     this.levelOne = new LevelOne(this);
 
     // actors
-    this.frogCounter = new FrogCounter(game);
-    this.frog = new ClickFrog(game, this.frogCounter);
+    this.frog = new ClickFrog(game);
 
     this.levelOne.add(this.frog);
-    this.levelOne.add(this.frogCounter);
 
     game.add('levelOne', this.levelOne);
 

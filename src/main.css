@@ -1,4 +1,27 @@
 h1 {
-    color: red;
-    background-color: green;
+  color: red;
+  background-color: green;
+}
+
+#root {
+  /* When this is relative, child elements positioned absolutely will
+    be relative to this element, not the document providing more accurate
+    positioning, since the canvas will be at (0, 0) */
+  position: relative;
+}
+
+#root #ui {
+  /* This will make the UI appear on top of the canvas */
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* These are scene-based UI styles */
+#ui.MainGame .button.button--start {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  background-color: red;
+  color: white;
 }
