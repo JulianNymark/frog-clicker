@@ -1,11 +1,11 @@
 import { Actor, Color, Engine, Sprite, vec, Vector } from 'excalibur';
+import { data, updateCounters } from '../../data';
 import { Resources } from '../../resources';
 
 const FROG_SIZE = 300;
 
 export class ClickFrog extends Actor {
   private startedClick = false;
-  counter = 0; // TODO: saveable & loadable
 
   constructor(game: Engine) {
     super({
@@ -14,11 +14,6 @@ export class ClickFrog extends Actor {
       height: FROG_SIZE,
       color: new Color(255, 255, 255)
     });
-  }
-
-  updateCounter = () => {
-    const frogCounter = document.getElementById("frogCounter");
-    frogCounter.innerHTML = `${(this.counter).toFixed(2)} frogs`;
   }
 
   clickStart = () => {
@@ -32,8 +27,8 @@ export class ClickFrog extends Actor {
     this.currentDrawing.scale.setTo(FROG_SIZE/this.currentDrawing.width, FROG_SIZE/this.currentDrawing.height);
 
     const frogsGained = 1; // TODO
-    this.counter = this.counter + frogsGained;
-    this.updateCounter();
+    data.counter += frogsGained;
+    updateCounters();
   };
 
   onInitialize() {

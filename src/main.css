@@ -1,4 +1,9 @@
-h1 {
+* {
+  margin: 0;
+  padding: 0;
+}
+
+h1,h2,h3,h4,h5,h6,span {
   color: white;
 }
 
@@ -30,7 +35,26 @@ h1 {
   height: 100%;
   width: 100%;
 }
+#purchases {
+  overflow: scroll;
+}
 
 #ui.MainGame .purchaseable {
   border: 1px solid black;
+}
+
+#ui.MainGame .purchaseable .name {
+  color: white;
+  font-size: xx-large;
+  font-weight: 900;
+  margin: 16px 0px;
+}
+
+.flex-row {
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.counter-container > *{
+  margin: 0 5px;
 }
