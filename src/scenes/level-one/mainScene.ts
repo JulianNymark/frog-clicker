@@ -1,7 +1,7 @@
 import { Engine, Scene, Timer } from "excalibur";
 import { ClickFrog } from "../../actors/player/ClickFrog";
 import { Construct, initConstructs } from "../../constructs";
-import { data, loadData, saveData, updateCounters } from "../../data";
+import { data, loadData, saveData, updateCounters, updateTitle } from "../../data";
 
 const TICK_TIME_MS = 100;
 
@@ -115,6 +115,7 @@ const calculateFPS = () => {
 export class MainScene extends Scene {
   tickTimer: Timer;
   saveTimer: Timer;
+  titleTimer: Timer;
 
   public onInitialize(engine: Engine) {
     game = engine;
@@ -129,6 +130,14 @@ export class MainScene extends Scene {
     });
 
     this.saveTimer = new Timer({
+      interval: 5000,
+      repeats: true,
+      fcn: () => {
+        updateTitle();
+      },
+    });
+
+    this.titleTimer = new Timer({
       interval: 1000 * 60,
       repeats: true,
       fcn: () => {
@@ -148,6 +157,7 @@ export class MainScene extends Scene {
     generateDom();
 
     this.add(this.tickTimer);
+    this.add(this.titleTimer);
     this.add(this.saveTimer);
   }
   public onDeactivate() {

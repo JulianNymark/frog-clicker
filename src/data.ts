@@ -20,6 +20,10 @@ export const updateCounters = () => {
   netWorthCounter.innerHTML = `${(data.spent + data.counter).toFixed(2)} frogs`;
 };
 
+export const updateTitle = () => {
+  document.title = `${Math.floor(data.counter)} frogs - Frog Clicker`;
+}
+
 export const saveData = () => {
   localStorage.setItem("data", JSON.stringify(data));
   console.log("game has been saved");
