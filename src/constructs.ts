@@ -1,3 +1,5 @@
+import { data } from "./data";
+
 export type Construct = {
   id: string;
   price: number;
@@ -6,6 +8,7 @@ export type Construct = {
   frogPerSec: number;
   name: string;
   description?: string;
+  revealed: boolean;
 };
 
 const constructs: Construct[] = [
@@ -17,6 +20,7 @@ const constructs: Construct[] = [
     frogPerSec: 0.1,
     name: "Tadpole",
     description: "A good boi",
+    revealed: true,
   },
   {
     id: "paint",
@@ -26,6 +30,7 @@ const constructs: Construct[] = [
     frogPerSec: 1,
     name: "Green Paint",
     description: "Paint other small critters to obtain a frog instantly",
+    revealed: false,
   },
   {
     id: "toad",
@@ -35,6 +40,7 @@ const constructs: Construct[] = [
     frogPerSec: 5,
     name: "Toad",
     description: "This boi is pretty big",
+    revealed: false,
   },
   {
     id: "pond",
@@ -44,6 +50,7 @@ const constructs: Construct[] = [
     frogPerSec: 10,
     name: "Pond",
     description: "A whole pond of them!",
+    revealed: false,
   },
   {
     id: "lizard",
@@ -53,6 +60,7 @@ const constructs: Construct[] = [
     frogPerSec: 50,
     name: "Lizard",
     description: "This frog is incredibly long and speedy!",
+    revealed: false,
   },
   {
     id: "ocean",
@@ -62,9 +70,25 @@ const constructs: Construct[] = [
     frogPerSec: 100,
     name: "Ocean",
     description: "Replace an ocean's fish with saltwater frogs",
+    revealed: false,
   },
 ];
 
 export const initConstructs = () => {
   return constructs;
+}
+
+export const constructPrice = (construct: Construct) => {
+  return construct.price * (Math.pow(construct.priceScale, construct.current));
+}
+
+export const revealCheck = () => {
+  console.log('running revealCheck');
+  for (const construct of data.constructs) {
+    if ((data.spent + data.counter) >= constructPrice(construct)) {
+      construct.revealed = true;
+      const constructElem = document.getElementById(construct.id);
+      constructElem.classList.remove('hidden');
+    }
+  }
 }

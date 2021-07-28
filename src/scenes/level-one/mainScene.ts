@@ -1,6 +1,6 @@
 import { Engine, Scene, Timer } from "excalibur";
 import { ClickFrog } from "../../actors/player/ClickFrog";
-import { Construct, initConstructs } from "../../constructs";
+import { Construct, constructPrice, initConstructs, revealCheck } from "../../constructs";
 import { data, loadData, saveData, updateCounters, updateTitle } from "../../data";
 
 const TICK_TIME_MS = 100;
@@ -9,7 +9,6 @@ const ui = document.getElementById("ui");
 
 let frog: ClickFrog;
 let game: Engine;
-let constructs: Construct[] = initConstructs();
 
 const createSection = (id) => {
   const div = document.createElement("div");
@@ -18,13 +17,9 @@ const createSection = (id) => {
   return div;
 };
 
-const constructPrice = (construct: Construct) => {
-  return construct.price * (Math.pow(construct.priceScale, construct.current));
-}
-
 const createPurchaseableDiv = (construct: Construct) => {
   const purchaseable = document.createElement("div");
-  purchaseable.className = "purchaseable";
+  purchaseable.className = `purchaseable ${construct.revealed ? '' : 'hidden'}`;
   purchaseable.id = construct.id;
 
   const name = document.createElement("p");
@@ -64,7 +59,7 @@ const createPurchaseableDiv = (construct: Construct) => {
 const purchasesFromConstructs = () => {
   const purchases = document.getElementById("purchases");
 
-  for (const construct of constructs) {
+  for (const construct of data.constructs) {
     purchases.appendChild(createPurchaseableDiv(construct));
   }
 };
@@ -104,7 +99,7 @@ const generateDom = () => {
 // FPS == frogs per second
 const calculateFPS = () => {
   const reducer = (accumulator, currentValue) => accumulator + currentValue;
-  return (constructs.map((c) => {
+  return (data.constructs.map((c) => {
     return (c.current * c.frogPerSec) / (1000 / TICK_TIME_MS);
   }).reduce(reducer));
 }
@@ -116,6 +111,7 @@ export class MainScene extends Scene {
   tickTimer: Timer;
   saveTimer: Timer;
   titleTimer: Timer;
+  revealCheckTimer: Timer;
 
   public onInitialize(engine: Engine) {
     game = engine;
@@ -130,19 +126,21 @@ export class MainScene extends Scene {
     });
 
     this.saveTimer = new Timer({
-      interval: 5000,
+      interval: 1000 * 5,
       repeats: true,
-      fcn: () => {
-        updateTitle();
-      },
+      fcn: updateTitle,
+    });
+
+    this.revealCheckTimer = new Timer({
+      interval: 1000 * 10,
+      repeats: true,
+      fcn: revealCheck,
     });
 
     this.titleTimer = new Timer({
       interval: 1000 * 60,
       repeats: true,
-      fcn: () => {
-        saveData();
-      },
+      fcn: saveData,
     });
   }
   public onActivate() {
@@ -158,6 +156,7 @@ export class MainScene extends Scene {
 
     this.add(this.tickTimer);
     this.add(this.titleTimer);
+    this.add(this.revealCheckTimer);
     this.add(this.saveTimer);
   }
   public onDeactivate() {
