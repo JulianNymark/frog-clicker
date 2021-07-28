@@ -3,6 +3,9 @@ import { Resources } from '../../resources';
 
 const FROG_SIZE = 300;
 
+const frogCounterButton = document.getElementById('frog-counter');
+let frogCounter = 0;
+
 export class ClickFrog extends Actor {
   private startedClick = false;
 
@@ -25,9 +28,9 @@ export class ClickFrog extends Actor {
     this.startedClick = false;
     this.currentDrawing.scale.setTo(FROG_SIZE/this.currentDrawing.width, FROG_SIZE/this.currentDrawing.height);
 
-    // const initialCount = this.frogCounter.getFrogCount();
-    // const frogsGained = 1; // TODO
-    // this.frogCounter.setFrogCount(initialCount + frogsGained);
+    const frogsGained = 1; // TODO
+    frogCounter = frogCounter + frogsGained;
+    frogCounterButton.innerHTML = `${frogCounter} frogs`;
   };
 
   onInitialize() {

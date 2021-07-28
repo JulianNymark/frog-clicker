@@ -15,6 +15,7 @@ export class LevelOne extends Scene {
     ui.classList.add('MainGame');
 
     const btnStart = document.createElement('button');
+    btnStart.id = 'frog-counter-button';
     btnStart.innerHTML = 'click';
     btnStart.className = 'button button--start';
 
