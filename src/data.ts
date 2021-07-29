@@ -1,4 +1,5 @@
 import { Construct, initConstructs } from "./constructs";
+import { toastMessage } from "./toast";
 
 type Data = {
   counter: number;
@@ -18,6 +19,9 @@ export const updateCounters = () => {
 
   const netWorthCounter = document.getElementById("netWorth");
   netWorthCounter.innerHTML = `${(data.spent + data.counter).toFixed(2)} frogs`;
+
+  const fpsCounter = document.getElementById("fps");
+  fpsCounter.innerHTML = `${(calculateFPS(1000)).toFixed(2)} frogs/s`;
 };
 
 export const updateTitle = () => {
@@ -26,7 +30,8 @@ export const updateTitle = () => {
 
 export const saveData = () => {
   localStorage.setItem("data", JSON.stringify(data));
-  console.log("game has been saved");
+  toastMessage('your frogs have been saved');
+  console.log("your frogs have been saved");
 };
 
 export const loadData = () => {
@@ -40,3 +45,11 @@ export const loadData = () => {
     }
   }
 };
+
+// FPS == frogs per second
+export const calculateFPS = (tickTimeMs: number) => {
+  const reducer = (accumulator, currentValue) => accumulator + currentValue;
+  return (data.constructs.map((c) => {
+    return (c.current * c.frogPerSec) / (1000 / tickTimeMs);
+  }).reduce(reducer));
+}

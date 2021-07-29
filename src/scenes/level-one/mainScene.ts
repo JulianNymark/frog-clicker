@@ -1,9 +1,13 @@
 import { Engine, Scene, Timer } from "excalibur";
+import { contains } from "excalibur/dist/Util/Util";
 import { ClickFrog } from "../../actors/player/ClickFrog";
 import { Construct, constructPrice, initConstructs, revealCheck } from "../../constructs";
-import { data, loadData, saveData, updateCounters, updateTitle } from "../../data";
+import { calculateFPS, data, loadData, saveData, updateCounters, updateTitle } from "../../data";
+import { registerTapHandlers } from "../../tapHandler";
+import { hidden, initVisibilityChange } from "../../visibilityChange";
 
-const TICK_TIME_MS = 100;
+export const TICK_TIME_MS = 100;
+export const BG_TICK_TIME_MS = 5000;
 
 const ui = document.getElementById("ui");
 
@@ -51,7 +55,7 @@ const createPurchaseableDiv = (construct: Construct) => {
   };
 
   purchaseable.addEventListener('click', clickHandler);
-  purchaseable.addEventListener('touchstart', clickHandler);
+  registerTapHandlers(purchaseable, clickHandler);
 
   return purchaseable;
 };
@@ -64,6 +68,13 @@ const purchasesFromConstructs = () => {
   }
 };
 
+const containerDiv = () => {
+  const container = document.createElement('div');
+  container.className = 'flex-row counter-container';
+
+  return container;
+}
+
 const frogCounter = () => {
   const frogSection = document.getElementById("frog");
 
@@ -71,17 +82,23 @@ const frogCounter = () => {
   counter.id = "frogCounter";
   frogSection.appendChild(counter);
 
-  const container = document.createElement('div');
-  container.className = 'flex-row counter-container';
-
+  const netWorthContainer = containerDiv();
   const netWorthLabel = document.createElement('span');
   netWorthLabel.innerHTML = 'Net Worth:';
-  container.appendChild(netWorthLabel);
+  netWorthContainer.appendChild(netWorthLabel);
   const netWorth = document.createElement("h4");
   netWorth.id = "netWorth";
-  container.appendChild(netWorth);
+  netWorthContainer.appendChild(netWorth);
+  frogSection.appendChild(netWorthContainer);
 
-  frogSection.appendChild(container);
+  const fpsContainer = containerDiv();
+  const FPSLabel = document.createElement('span');
+  FPSLabel.innerHTML = 'FPS:';
+  fpsContainer.appendChild(FPSLabel);
+  const FPS = document.createElement("h4");
+  FPS.id = "fps";
+  fpsContainer.appendChild(FPS);
+  frogSection.appendChild(fpsContainer);
 
   updateCounters();
 };
@@ -96,22 +113,14 @@ const generateDom = () => {
   purchasesFromConstructs();
 };
 
-// FPS == frogs per second
-const calculateFPS = () => {
-  const reducer = (accumulator, currentValue) => accumulator + currentValue;
-  return (data.constructs.map((c) => {
-    return (c.current * c.frogPerSec) / (1000 / TICK_TIME_MS);
-  }).reduce(reducer));
-}
-
 /**
  * Managed scene
  */
 export class MainScene extends Scene {
   tickTimer: Timer;
-  saveTimer: Timer;
-  titleTimer: Timer;
   revealCheckTimer: Timer;
+  titleTimer: Timer;
+  saveTimer: Timer;
 
   public onInitialize(engine: Engine) {
     game = engine;
@@ -120,15 +129,9 @@ export class MainScene extends Scene {
       interval: TICK_TIME_MS,
       repeats: true,
       fcn: () => {
-        data.counter += calculateFPS();
+        data.counter += calculateFPS(TICK_TIME_MS);
         updateCounters();
       },
-    });
-
-    this.saveTimer = new Timer({
-      interval: 1000 * 5,
-      repeats: true,
-      fcn: updateTitle,
     });
 
     this.revealCheckTimer = new Timer({
@@ -138,7 +141,13 @@ export class MainScene extends Scene {
     });
 
     this.titleTimer = new Timer({
-      interval: 1000 * 60,
+      interval: 1000 * 5,
+      repeats: true,
+      fcn: updateTitle,
+    });
+
+    this.saveTimer = new Timer({
+      interval: 1000 * 30,
       repeats: true,
       fcn: saveData,
     });
@@ -155,9 +164,19 @@ export class MainScene extends Scene {
     generateDom();
 
     this.add(this.tickTimer);
-    this.add(this.titleTimer);
     this.add(this.revealCheckTimer);
+    this.add(this.titleTimer);
     this.add(this.saveTimer);
+
+    initVisibilityChange();
+
+    const bgTimer = setInterval(()=> {
+      if (document[hidden]) {
+        data.counter += calculateFPS(BG_TICK_TIME_MS);
+        updateTitle();
+        saveData();
+      }  
+    }, BG_TICK_TIME_MS);
   }
   public onDeactivate() {
     this.tickTimer.cancel();
