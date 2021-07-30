@@ -4,10 +4,10 @@ import {
   Construct,
   constructPrice,
   initConstructs,
-  patchConstructs,
   purchaseConstruct,
   revealCheck,
 } from "../../constructs";
+import { applyPatches } from "../../patches";
 import {
   calculateFPS,
   data,
@@ -166,7 +166,7 @@ export class MainScene extends Scene {
     this.add(frog);
 
     loadData();
-    patchConstructs();
+    applyPatches();
 
     generateDom();
 

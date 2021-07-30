@@ -11,7 +11,7 @@ export type Construct = {
   revealed: boolean;
 };
 
-const constructs: Construct[] = [
+export const constructs: Construct[] = [
   {
     id: "tadpole",
     price: 10,
@@ -96,30 +96,22 @@ const constructs: Construct[] = [
 
 export const initConstructs = () => {
   return constructs;
-}
+};
 
 export const constructPrice = (construct: Construct) => {
   return construct.price * (Math.pow(construct.priceScale, construct.current));
-}
+};
 
 export const revealCheck = () => {
-  console.log('running revealCheck');
+  console.log("running revealCheck");
   for (const construct of data.constructs) {
     if ((data.spent + data.counter) >= constructPrice(construct)) {
       construct.revealed = true;
       const constructElem = document.getElementById(construct.id);
-      constructElem.classList.remove('hidden');
+      constructElem.classList.remove("hidden");
     }
   }
-}
-
-export const patchConstructs = () => {
-  for (const construct of data.constructs) {
-    if (construct.id === 'ocean') {
-      construct.frogPerSec = 500;
-    }
-  }
-}
+};
 
 export const purchaseConstruct = (construct: Construct) => {
   const price = document.getElementById(`${construct.id}-price`);
@@ -131,12 +123,12 @@ export const purchaseConstruct = (construct: Construct) => {
     construct.current += 1;
     data.counter -= purchasePrice;
     data.spent += purchasePrice;
-    
+
     current.innerHTML = `CURRENT: ${construct.current}`;
     price.innerHTML = `PRICE: ${constructPrice(construct)}`;
-    
+
     updateCounters();
   }
 
   saveNetWorthTime();
-}
+};
