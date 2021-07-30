@@ -1,4 +1,4 @@
-import { data, saveData, updateCounters } from "./data";
+import { data, saveData, saveNetWorthTime, updateCounters } from "./data";
 
 export type Construct = {
   id: string;
@@ -49,7 +49,7 @@ const constructs: Construct[] = [
     current: 0,
     frogPerSec: 6,
     name: "Lily Pad",
-    description: "A literal green floating stepping-stone for all frogs",
+    description: "A proper forever home",
     revealed: false,
   },
   {
@@ -89,7 +89,7 @@ const constructs: Construct[] = [
     current: 0,
     frogPerSec: 5000,
     name: "Poisonous Frog",
-    description: "Each color has a distinct flavor",
+    description: "Each color has a distinct fruity flavor",
     revealed: false,
   },
 ];
@@ -119,4 +119,24 @@ export const patchConstructs = () => {
       construct.frogPerSec = 500;
     }
   }
+}
+
+export const purchaseConstruct = (construct: Construct) => {
+  const price = document.getElementById(`${construct.id}-price`);
+  const current = document.getElementById(`${construct.id}-current`);
+
+  const purchasePrice = constructPrice(construct);
+
+  if (data.counter >= purchasePrice) {
+    construct.current += 1;
+    data.counter -= purchasePrice;
+    data.spent += purchasePrice;
+    
+    current.innerHTML = `CURRENT: ${construct.current}`;
+    price.innerHTML = `PRICE: ${constructPrice(construct)}`;
+    
+    updateCounters();
+  }
+
+  saveNetWorthTime();
 }

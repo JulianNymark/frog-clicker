@@ -1,8 +1,22 @@
 import { Engine, Scene, Timer } from "excalibur";
-import { contains } from "excalibur/dist/Util/Util";
 import { ClickFrog } from "../../actors/player/ClickFrog";
-import { Construct, constructPrice, initConstructs, patchConstructs, revealCheck } from "../../constructs";
-import { calculateFPS, data, loadData, saveData, updateCounters, updateTitle } from "../../data";
+import {
+  Construct,
+  constructPrice,
+  initConstructs,
+  patchConstructs,
+  purchaseConstruct,
+  revealCheck,
+} from "../../constructs";
+import {
+  calculateFPS,
+  data,
+  generateOfflineFrogs,
+  loadData,
+  saveData,
+  updateCounters,
+  updateTitle,
+} from "../../data";
 import { registerTapHandlers } from "../../tapHandler";
 import { hidden, initVisibilityChange } from "../../visibilityChange";
 
@@ -23,38 +37,30 @@ const createSection = (id) => {
 
 const createPurchaseableDiv = (construct: Construct) => {
   const purchaseable = document.createElement("div");
-  purchaseable.className = `purchaseable ${construct.revealed ? '' : 'hidden'}`;
+  purchaseable.className = `purchaseable ${construct.revealed ? "" : "hidden"}`;
   purchaseable.id = construct.id;
 
   const name = document.createElement("p");
   name.innerHTML = construct.name;
-  name.className = 'name';
+  name.className = "name";
   purchaseable.appendChild(name);
   const price = document.createElement("p");
+  price.id = `${construct.id}-price`;
   price.innerHTML = `PRICE: ${constructPrice(construct)}`;
   purchaseable.appendChild(price);
   const description = document.createElement("p");
   description.innerHTML = `${construct.description}`;
   purchaseable.appendChild(description);
   const current = document.createElement("p");
+  current.id = `${construct.id}-current`;
   current.innerHTML = `CURRENT: ${construct.current}`;
   purchaseable.appendChild(current);
 
   const clickHandler = () => {
-    const purchasePrice = constructPrice(construct);
-    if (data.counter >= purchasePrice) {
-      construct.current += 1;
-      data.counter -= purchasePrice;
-      data.spent += purchasePrice;
-
-      current.innerHTML = `CURRENT: ${construct.current}`;
-      price.innerHTML = `PRICE: ${constructPrice(construct)}`;
-
-      updateCounters();
-    }
+    purchaseConstruct(construct);
   };
 
-  purchaseable.addEventListener('click', clickHandler);
+  purchaseable.addEventListener("click", clickHandler);
   registerTapHandlers(purchaseable, clickHandler);
 
   return purchaseable;
@@ -69,11 +75,11 @@ const purchasesFromConstructs = () => {
 };
 
 const containerDiv = () => {
-  const container = document.createElement('div');
-  container.className = 'flex-row counter-container';
+  const container = document.createElement("div");
+  container.className = "flex-row counter-container";
 
   return container;
-}
+};
 
 const frogCounter = () => {
   const frogSection = document.getElementById("frog");
@@ -83,8 +89,8 @@ const frogCounter = () => {
   frogSection.appendChild(counter);
 
   const netWorthContainer = containerDiv();
-  const netWorthLabel = document.createElement('span');
-  netWorthLabel.innerHTML = 'Net Worth:';
+  const netWorthLabel = document.createElement("span");
+  netWorthLabel.innerHTML = "Net Worth:";
   netWorthContainer.appendChild(netWorthLabel);
   const netWorth = document.createElement("h4");
   netWorth.id = "netWorth";
@@ -92,8 +98,8 @@ const frogCounter = () => {
   frogSection.appendChild(netWorthContainer);
 
   const fpsContainer = containerDiv();
-  const FPSLabel = document.createElement('span');
-  FPSLabel.innerHTML = 'FPS:';
+  const FPSLabel = document.createElement("span");
+  FPSLabel.innerHTML = "FPS:";
   fpsContainer.appendChild(FPSLabel);
   const FPS = document.createElement("h4");
   FPS.id = "fps";
@@ -154,14 +160,14 @@ export class MainScene extends Scene {
   }
   public onActivate() {
     ui.classList.add("MainGame");
-    
+
     // actors
     frog = new ClickFrog(game);
     this.add(frog);
 
     loadData();
     patchConstructs();
-    
+
     generateDom();
 
     this.add(this.tickTimer);
@@ -171,14 +177,15 @@ export class MainScene extends Scene {
 
     initVisibilityChange();
 
-    const bgTimer = setInterval(()=> {
+    const bgTimer = setInterval(() => {
       if (document[hidden]) {
         data.counter += calculateFPS(BG_TICK_TIME_MS);
         updateTitle();
         saveData();
-      }  
+      }
     }, BG_TICK_TIME_MS);
-
+    
+    generateOfflineFrogs();
   }
   public onDeactivate() {
     this.tickTimer.cancel();

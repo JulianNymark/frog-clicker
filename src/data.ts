@@ -7,6 +7,11 @@ type Data = {
   constructs: Construct[];
 };
 
+type NetworthTime = {
+  netWorth: number;
+  timeUTC: number;
+};
+
 export let data: Data = {
   counter: 0,
   spent: 0,
@@ -26,11 +31,11 @@ export const updateCounters = () => {
 
 export const updateTitle = () => {
   document.title = `${Math.floor(data.counter)} frogs - Frog Clicker`;
-}
+};
 
 export const saveData = () => {
   localStorage.setItem("data", JSON.stringify(data));
-  toastMessage('your frogs have been saved');
+  toastMessage("your frogs have been saved");
   console.log("your frogs have been saved");
 };
 
@@ -42,7 +47,7 @@ export const loadData = () => {
       counter: 0,
       spent: 0,
       constructs: initConstructs(),
-    }
+    };
   }
 };
 
@@ -52,4 +57,29 @@ export const calculateFPS = (tickTimeMs: number) => {
   return (data.constructs.map((c) => {
     return (c.current * c.frogPerSec) / (1000 / tickTimeMs);
   }).reduce(reducer));
-}
+};
+
+export const generateOfflineFrogs = () => {
+  const netWorthTime: NetworthTime = JSON.parse(
+    localStorage.getItem("netWorthTime"),
+  );
+
+  if (netWorthTime) {
+    const diffTimeMs = (new Date()).getTime() - netWorthTime.timeUTC;
+    const diffTimeFrogs = calculateFPS(diffTimeMs);
+
+    if (diffTimeFrogs > (data.spent + data.counter)) {
+      data.counter += diffTimeFrogs;
+    }
+  }
+  saveNetWorthTime();
+};
+
+export const saveNetWorthTime = () => {
+  const netWorthTime: NetworthTime = {
+    netWorth: data.spent + data.counter,
+    timeUTC: (new Date()).getTime(),
+  };
+
+  localStorage.setItem("netWorthTime", JSON.stringify(netWorthTime));
+};

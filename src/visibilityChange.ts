@@ -1,7 +1,7 @@
-import { calculateFPS } from "./data";
+import { calculateFPS, generateOfflineFrogs } from "./data";
 
-export let hidden = 'hidden';
-let visibilityChange = 'visibilitychange';
+export let hidden = "hidden";
+let visibilityChange = "visibilitychange";
 
 export const initVisibilityChange = () => {
   if (typeof document.hidden !== "undefined") { // Opera 12.10 and Firefox 18 and later support
@@ -18,9 +18,9 @@ export const initVisibilityChange = () => {
   }
 
   const handleVisibilityChange = () => {
-      if (document[hidden]) {
-        // check for discrepancy in FPS gain? (timestamp diffing here)
-      }
+    if (!document[hidden]) {
+      generateOfflineFrogs();
+    }
   };
 
   document.addEventListener(visibilityChange, handleVisibilityChange, false);
