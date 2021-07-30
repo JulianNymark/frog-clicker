@@ -1,7 +1,7 @@
 import { data } from "./data";
 import { constructs } from "./constructs";
 
-const VERSION = "0.0.0";
+const VERSION = "0.0.1";
 
 type Version = {
   major: number;
