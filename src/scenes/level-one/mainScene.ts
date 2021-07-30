@@ -1,7 +1,7 @@
 import { Engine, Scene, Timer } from "excalibur";
 import { contains } from "excalibur/dist/Util/Util";
 import { ClickFrog } from "../../actors/player/ClickFrog";
-import { Construct, constructPrice, initConstructs, revealCheck } from "../../constructs";
+import { Construct, constructPrice, initConstructs, patchConstructs, revealCheck } from "../../constructs";
 import { calculateFPS, data, loadData, saveData, updateCounters, updateTitle } from "../../data";
 import { registerTapHandlers } from "../../tapHandler";
 import { hidden, initVisibilityChange } from "../../visibilityChange";
@@ -160,7 +160,8 @@ export class MainScene extends Scene {
     this.add(frog);
 
     loadData();
-
+    patchConstructs();
+    
     generateDom();
 
     this.add(this.tickTimer);
@@ -177,6 +178,7 @@ export class MainScene extends Scene {
         saveData();
       }  
     }, BG_TICK_TIME_MS);
+
   }
   public onDeactivate() {
     this.tickTimer.cancel();

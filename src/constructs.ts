@@ -1,4 +1,4 @@
-import { data } from "./data";
+import { data, saveData, updateCounters } from "./data";
 
 export type Construct = {
   id: string;
@@ -77,7 +77,7 @@ const constructs: Construct[] = [
     price: 1000000,
     priceScale: 1.3,
     current: 0,
-    frogPerSec: 100,
+    frogPerSec: 500,
     name: "Ocean",
     description: "Replace an ocean's fish with saltwater frogs",
     revealed: false,
@@ -109,6 +109,14 @@ export const revealCheck = () => {
       construct.revealed = true;
       const constructElem = document.getElementById(construct.id);
       constructElem.classList.remove('hidden');
+    }
+  }
+}
+
+export const patchConstructs = () => {
+  for (const construct of data.constructs) {
+    if (construct.id === 'ocean') {
+      construct.frogPerSec = 500;
     }
   }
 }
