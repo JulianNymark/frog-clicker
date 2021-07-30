@@ -36,7 +36,7 @@ export const applyPatches = () => {
 
   patchConstructs(version, patchMessages);
   showPatchMessages(patchMessages);
-  setVersion(version);
+  setVersion(VERSION);
 };
 
 const setVersion = (version: string) => {

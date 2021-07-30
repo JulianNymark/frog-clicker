@@ -49,7 +49,7 @@ export const constructs: Construct[] = [
     current: 0,
     frogPerSec: 6,
     name: "Lily Pad",
-    description: "A proper forever home",
+    description: "A proper forever home. A place to sit",
     revealed: false,
   },
   {
