@@ -36,6 +36,7 @@
   },
   "dependencies": {
     "excalibur": "0.24.5",
-    "human-format": "0.11.0"
+    "human-format": "0.11.0",
+    "patch-package": "6.4.7"
   }
 }

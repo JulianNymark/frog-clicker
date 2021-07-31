@@ -10,5 +10,6 @@ var frogScale = new humanFormat.Scale({
 });
 
 export const numberFormat = (n: number): string => {
-  return humanFormat(n, { scale: frogScale, decimals: 3 });
+  const raw = humanFormat.raw(n, { scale: frogScale, decimals: 3 });
+  return `${raw.value.toFixed(3)} ${raw.prefix}`;
 };
