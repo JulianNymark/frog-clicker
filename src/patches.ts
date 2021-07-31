@@ -1,7 +1,7 @@
 import { data } from "./data";
 import { constructs } from "./constructs";
 
-const VERSION = "0.0.1";
+const VERSION = "0.0.2";
 
 type Version = {
   major: number;
@@ -35,6 +35,7 @@ export const applyPatches = () => {
   const patchMessages: string[] = [];
 
   patchConstructs(version, patchMessages);
+  patchGeneric(version, patchMessages);
   showPatchMessages(patchMessages);
   setVersion(VERSION);
 };
@@ -90,3 +91,9 @@ const showPatchMessages = (messages: string[]) => {
     }
   };
 };
+
+function patchGeneric(version: string, patchMessages: string[]) {
+  if (vLessThan(version, "0.0.2")) {
+    patchMessages.push('now more human readable numbers! (million, trillion... etc!) thanks to <a href="https://github.com/JsCommunity/human-format">https://github.com/JsCommunity/human-format</a>');
+  }
+}

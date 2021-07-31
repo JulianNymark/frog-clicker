@@ -35,6 +35,7 @@
     "webpack-merge": "5.8.0"
   },
   "dependencies": {
-    "excalibur": "0.24.5"
+    "excalibur": "0.24.5",
+    "human-format": "0.11.0"
   }
 }

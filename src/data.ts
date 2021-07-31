@@ -1,4 +1,5 @@
 import { Construct, initConstructs } from "./constructs";
+import { numberFormat } from "./numberFormat";
 import { toastMessage } from "./toast";
 
 type Data = {
@@ -20,17 +21,17 @@ export let data: Data = {
 
 export const updateCounters = () => {
   const frogCounter = document.getElementById("frogCounter");
-  frogCounter.innerHTML = `${(data.counter).toFixed(2)} frogs`;
+  frogCounter.innerHTML = `${numberFormat(data.counter)} frogs`;
 
   const netWorthCounter = document.getElementById("netWorth");
-  netWorthCounter.innerHTML = `${(data.spent + data.counter).toFixed(2)} frogs`;
+  netWorthCounter.innerHTML = `${numberFormat(data.spent + data.counter)} frogs`;
 
   const fpsCounter = document.getElementById("fps");
-  fpsCounter.innerHTML = `${(calculateFPS(1000)).toFixed(2)} frogs/s`;
+  fpsCounter.innerHTML = `${numberFormat(calculateFPS(1000))} frogs/s`;
 };
 
 export const updateTitle = () => {
-  document.title = `${Math.floor(data.counter)} frogs - Frog Clicker`;
+  document.title = `${numberFormat(Math.floor(data.counter))} frogs - Frog Clicker`;
 };
 
 export const saveData = () => {
