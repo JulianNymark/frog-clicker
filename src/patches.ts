@@ -44,6 +44,7 @@ export const applyPatches = () => {
 const setVersion = (version: string) => {
   const element = document.getElementById("version");
   element.innerHTML = `v${version}`;
+  localStorage.setItem("version", version);
 };
 
 const patchConstructs = (version: string, patchMessages: string[]) => {
