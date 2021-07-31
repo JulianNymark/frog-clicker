@@ -1,4 +1,5 @@
 import { data, saveData, saveNetWorthTime, updateCounters } from "./data";
+import { numberFormat } from "./numberFormat";
 
 export type Construct = {
   id: string;
@@ -125,7 +126,7 @@ export const purchaseConstruct = (construct: Construct) => {
     data.spent += purchasePrice;
 
     current.innerHTML = `CURRENT: ${construct.current}`;
-    price.innerHTML = `PRICE: ${constructPrice(construct)}`;
+    price.innerHTML = `PRICE: ${numberFormat(constructPrice(construct))}`;
 
     updateCounters();
   }

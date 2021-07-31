@@ -19,6 +19,7 @@ import {
 } from "../../data";
 import { registerTapHandlers } from "../../tapHandler";
 import { hidden, initVisibilityChange } from "../../visibilityChange";
+import { numberFormat } from "../../numberFormat";
 
 export const TICK_TIME_MS = 100;
 export const BG_TICK_TIME_MS = 5000;
@@ -46,7 +47,7 @@ const createPurchaseableDiv = (construct: Construct) => {
   purchaseable.appendChild(name);
   const price = document.createElement("p");
   price.id = `${construct.id}-price`;
-  price.innerHTML = `PRICE: ${constructPrice(construct)}`;
+  price.innerHTML = `PRICE: ${numberFormat(constructPrice(construct))}`;
   purchaseable.appendChild(price);
   const description = document.createElement("p");
   description.innerHTML = `${construct.description}`;
