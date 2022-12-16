@@ -3,8 +3,28 @@
   padding: 0;
 }
 
-h1,h2,h3,h4,h5,h6,span {
+@font-face {
+  font-family: "grinched";
+  src: url('./fonts/grinched-2.0/Grinched 2.0.ttf');
+}
+
+/* @font-face {
+  font-family: "playsir";
+  src: url('./fonts/playsir/PLAYSIR Regular.otf');
+}
+
+@font-face {
+  font-family: "brady";
+  src: url('./fonts/brady-bunch/BradBunR.ttf');
+} */
+
+span,p {
+  font-family: 'grinched';
+}
+
+h1,h2,h3,h4,h5,h6,span,*.name {
   color: white;
+  font-family: 'grinched';
 }
 
 #root {
@@ -55,13 +75,37 @@ h1,h2,h3,h4,h5,h6,span {
   margin-bottom: 16px;
 }
 
+@media (max-width: 1000px) {
+  * {
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+  }
+
+  #root #ui.MainGame {
+    flex-flow: column nowrap;
+  }
+
+  #root #ui.MainGame > * {
+    flex: 1;
+  }
+
+  #root #ui.MainGame #purchases {
+    flex: 2;
+  }
+}
+
 .flex-row {
   display: flex;
   flex-flow: row nowrap;
 }
 
+#frogCounter {
+  margin: 10px 20px;
+}
+
 .counter-container > *{
-  margin: 0 5px;
+  margin: 0 20px;
 }
 
 #purchases {
@@ -82,7 +126,7 @@ h1,h2,h3,h4,h5,h6,span {
   border-radius: 2px;
   padding: 16px;
   position: fixed;
-  z-index: 1;
+  z-index: 10001;
   left: 50%;
   bottom: 30px;
   font-size: 17px;
@@ -183,6 +227,8 @@ h1,h2,h3,h4,h5,h6,span {
   width: 100%;
   height: 100%;
   background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .purchaseable .gradient-art {
@@ -237,3 +283,4 @@ h1,h2,h3,h4,h5,h6,span {
   position: initial;
   z-index: -10000;
 }
+

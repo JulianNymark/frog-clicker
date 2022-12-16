@@ -1,6 +1,5 @@
 import { Engine, Loader, DisplayMode } from 'excalibur';
 import { MainScene } from './scenes/level-one/mainScene';
-import { ClickFrog } from './actors/player/ClickFrog';
 import { Resources } from './resources';
 import './main.css';
 
@@ -14,6 +13,7 @@ class Game extends Engine {
     super({ 
       displayMode: DisplayMode.FillScreen,
       canvasElementId: "excalibur-canvas",
+      suppressPlayButton: true,
       // pointerScope: PointerScope.Canvas, // BREAKS EVERYTHING!?
     });
     this.mainScene = new MainScene();

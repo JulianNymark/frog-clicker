@@ -128,7 +128,7 @@ export const revealCheck = () => {
       construct.tease = false;
       constructElemName!.innerHTML = construct.name;
       const constructElemArt = document.querySelector(`#${construct.id} .purchase-art`);
-      constructElemArt?.classList.add('revealed')
+      constructElemArt?.classList.add('revealed');
     } 
   }
 };

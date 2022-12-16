@@ -2,7 +2,7 @@ import { data } from "./data";
 import { Construct, constructs } from "./constructs";
 import { registerTapHandlers } from "./tapHandler";
 
-const VERSION = "0.0.2";
+const VERSION = "1.0.2";
 
 type Version = {
   major: number;
@@ -104,6 +104,17 @@ function patchGeneric(version: string, patchMessages: string[]) {
   if (vLessThan(version, "0.0.2")) {
     patchMessages.push(
       'now more human readable numbers! (million, trillion... etc!) thanks to <a href="https://github.com/JsCommunity/human-format">https://github.com/JsCommunity/human-format</a>',
+    );
+  }
+  if (vLessThan(version, "1.0.2")) {
+    patchMessages.push(
+      'incredible new update! major version bump! (1.0.2)',
+    );
+    patchMessages.push(
+      'visuals got an overhaul (mostly just images, CSS filters... you\'ll see it!)',
+    );
+    patchMessages.push(
+      'no longer show fractional frogs, apart from in FPS (frogs per second), it\'s mean to the frogs to even think about fractional units!',
     );
   }
 }
