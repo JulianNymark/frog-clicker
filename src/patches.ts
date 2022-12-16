@@ -2,7 +2,7 @@ import { data } from "./data";
 import { Construct, constructs } from "./constructs";
 import { registerTapHandlers } from "./tapHandler";
 
-const VERSION = "1.0.2";
+const VERSION = "1.1.2";
 
 type Version = {
   major: number;
@@ -115,6 +115,14 @@ function patchGeneric(version: string, patchMessages: string[]) {
     );
     patchMessages.push(
       'no longer show fractional frogs, apart from in FPS (frogs per second), it\'s mean to the frogs to even think about fractional units!',
+    );
+  }
+  if (vLessThan(version, "1.1.2")) {
+    patchMessages.push(
+      'font changes, a more playful font for a playful game!',
+    );
+    patchMessages.push(
+      'more mobile friendly layout',
     );
   }
 }
