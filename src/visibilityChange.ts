@@ -18,7 +18,7 @@ export const initVisibilityChange = () => {
   }
 
   const handleVisibilityChange = () => {
-    if (!document[hidden]) {
+    if (!(document.visibilityState == 'hidden')) {
       generateOfflineFrogs();
     }
   };

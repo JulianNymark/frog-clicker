@@ -1,5 +1,5 @@
 import { data } from "./data";
-import { constructs } from "./constructs";
+import { Construct, constructs } from "./constructs";
 import { registerTapHandlers } from "./tapHandler";
 
 const VERSION = "0.0.2";
@@ -43,7 +43,7 @@ export const applyPatches = () => {
 
 const setVersion = (version: string) => {
   const element = document.getElementById("version");
-  element.innerHTML = `v${version}`;
+  element!.innerHTML = `v${version}`;
   localStorage.setItem("version", version);
 };
 
@@ -56,11 +56,11 @@ const patchConstructs = (version: string, patchMessages: string[]) => {
       }
     }
     if (!data.constructs.find((e) => e.id === "lilypad")) {
-      data.constructs.push(constructs.find((e) => e.id === "lilypad"));
+      data.constructs.push(constructs.find((e) => e.id === "lilypad") as Construct);
       patchMessages.push("lilypad added");
     }
     if (!data.constructs.find((e) => e.id === "poisonfrog")) {
-      data.constructs.push(constructs.find((e) => e.id === "poisonfrog"));
+      data.constructs.push(constructs.find((e) => e.id === "poisonfrog") as Construct);
       patchMessages.push("poisonfrog added (better than ocean!)");
     }
   }
@@ -78,24 +78,24 @@ const showPatchMessages = (messages: string[]) => {
   for (const message of messages) {
     const p = document.createElement("p");
     p.innerHTML = message;
-    modalContent.appendChild(p);
+    modalContent?.appendChild(p);
   }
 
-  modal.style.display = "block";
+  modal!.style.display = "block";
 
-  closeButton.onclick = function () {
-    modal.style.display = "none";
+  closeButton!.onclick = function () {
+    modal!.style.display = "none";
   };
-  registerTapHandlers(closeButton, () => modal.style.display = "none");
+  registerTapHandlers(closeButton!, () => modal!.style.display = "none");
 
   window.onclick = function (event) {
     if (event.target == modal) {
-      modal.style.display = "none";
+      modal!.style.display = "none";
     }
   };
-  registerTapHandlers(window, (event) => {
+  registerTapHandlers(window, (event: Event) => {
     if (event.target == modal) {
-      modal.style.display = "none";
+      modal!.style.display = "none";
     }
   });
 };

@@ -12,7 +12,6 @@ var frogScale = new humanFormat.Scale({
   septillion: 1000000000000000000000000,
 });
 
-export const numberFormat = (n: number): string => {
-  const raw = humanFormat.raw(n, { scale: frogScale, decimals: 3 });
-  return `${raw.value.toFixed(3)} ${raw.prefix}`;
+export const numberFormat = (n: number, showDecimals = false): string => {
+  return humanFormat(n, {scale: frogScale, decimals: showDecimals ? 3 : 0});
 };

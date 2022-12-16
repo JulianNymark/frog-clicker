@@ -2,27 +2,24 @@ import { Engine, Loader, DisplayMode } from 'excalibur';
 import { MainScene } from './scenes/level-one/mainScene';
 import { ClickFrog } from './actors/player/ClickFrog';
 import { Resources } from './resources';
-import { PointerScope } from 'excalibur/dist/Input/Pointer';
 import './main.css';
 
 /**
  * Managed game class
  */
 class Game extends Engine {
-  private frog: ClickFrog;
   private mainScene: MainScene;
 
   constructor() {
     super({ 
-      displayMode: DisplayMode.FullScreen,
+      displayMode: DisplayMode.FillScreen,
       canvasElementId: "excalibur-canvas",
       // pointerScope: PointerScope.Canvas, // BREAKS EVERYTHING!?
     });
+    this.mainScene = new MainScene();
   }
 
   public start() {
-
-    this.mainScene = new MainScene(this);
     game.add('mainScene', this.mainScene);
 
     // Automatically load all default resources

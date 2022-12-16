@@ -20,14 +20,17 @@ export let data: Data = {
 };
 
 export const updateCounters = () => {
+  const showDecimalsFrogs = data.counter > 1000;
+  const showDecimalsNetWorth = (data.spent + data.counter) > 1000;
+
   const frogCounter = document.getElementById("frogCounter");
-  frogCounter.innerHTML = `${numberFormat(data.counter)} frogs`;
+  frogCounter!.innerHTML = `${numberFormat(data.counter, showDecimalsFrogs)} frogs`;
 
   const netWorthCounter = document.getElementById("netWorth");
-  netWorthCounter.innerHTML = `${numberFormat(data.spent + data.counter)} frogs`;
+  netWorthCounter!.innerHTML = `${numberFormat(data.spent + data.counter, showDecimalsNetWorth)} frogs`;
 
   const fpsCounter = document.getElementById("fps");
-  fpsCounter.innerHTML = `${numberFormat(calculateFPS(1000))} frogs/s`;
+  fpsCounter!.innerHTML = `${numberFormat(calculateFPS(1000), true)} frogs/s`;
 };
 
 export const updateTitle = () => {
@@ -41,7 +44,7 @@ export const saveData = () => {
 };
 
 export const loadData = () => {
-  data = JSON.parse(localStorage.getItem("data")) as Data;
+  data = JSON.parse(localStorage.getItem("data")!) as Data;
 
   if (data == null) {
     data = {
@@ -54,7 +57,7 @@ export const loadData = () => {
 
 // FPS == frogs per second
 export const calculateFPS = (tickTimeMs: number) => {
-  const reducer = (accumulator, currentValue) => accumulator + currentValue;
+  const reducer = (accumulator: any, currentValue: any) => accumulator + currentValue;
   return (data.constructs.map((c) => {
     return (c.current * c.frogPerSec) / (1000 / tickTimeMs);
   }).reduce(reducer));
@@ -62,7 +65,7 @@ export const calculateFPS = (tickTimeMs: number) => {
 
 export const generateOfflineFrogs = () => {
   const netWorthTime: NetworthTime = JSON.parse(
-    localStorage.getItem("netWorthTime"),
+    localStorage.getItem("netWorthTime")!,
   );
 
   if (netWorthTime) {
